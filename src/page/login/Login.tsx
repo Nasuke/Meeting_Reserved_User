@@ -1,12 +1,13 @@
-import { Button, Form, Input, message } from 'antd';
+import { Button, Form, Input, RadioChangeEvent, message, Radio } from 'antd';
 import './login.css';
 import { login } from '../../interface/interfaces';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 interface LoginUser {
     username: string;
     password: string;
+    admin: boolean
 }
 
 const layout1 = {
@@ -22,24 +23,31 @@ const layout2 = {
 export function Login() {
     const navigate = useNavigate();
 
+    const [admin, setAdmin] = useState<Boolean>(false)
+
     const onFinish = useCallback(async (values: LoginUser) => {
-        const res = await login(values.username, values.password);
+        const res = await login(values.username, values.password, values.admin);
     
         const { code, message: msg, data} = res.data;
         if(res.status === 201 || res.status === 200) {
             message.success('登录成功');
-
+            const { isAdmin } = data.userInfo
             localStorage.setItem('access_token', data.accessToken);
             localStorage.setItem('refresh_token', data.refreshToken);
             localStorage.setItem('user_info', JSON.stringify(data.userInfo));
 
+
             setTimeout(() => {
-                navigate('/');
+                navigate(isAdmin ? '/admin' : '/' );
             }, 1000);
         } else {
             message.error(data || '系统繁忙，请稍后再试');
         }
     }, []);
+
+    const onChange = useCallback((e: RadioChangeEvent) => {
+        setAdmin(e.target.value)
+    },[])
 
     return <div id="login-container">
         <h1>会议室预订系统</h1>
@@ -64,7 +72,15 @@ export function Login() {
             >
                 <Input.Password />
             </Form.Item>
-
+            <Form.Item
+                label="管理员"
+                name="admin"
+            >
+             <Radio.Group onChange={onChange} value={admin} defaultValue={false}>
+                <Radio value={true}>true</Radio>
+                <Radio value={false}>false</Radio>
+              </Radio.Group>
+            </Form.Item>
             <Form.Item
                 {...layout2}
             >

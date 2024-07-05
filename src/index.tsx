@@ -10,6 +10,10 @@ import { UpdateInfo } from './page/update_info/UpdateInfo';
 import { Menu } from './page/menu/Menu';
 import { MeetingRoomList } from './page/meeting_room_list/MeetingRoomList';
 import { BookingHistory } from './page/booking_history/BookingHistory';
+import { AdminIndex } from './pageAdmin/index';
+import { AdminMenu } from './pageAdmin/menu/Menu';
+import { ChildProcess } from 'child_process';
+import { UserManage } from './pageAdmin/user_manage/UserManage';
 
 const routes = [
   {
@@ -37,6 +41,27 @@ const routes = [
             path: 'booking_history',
             element: <BookingHistory/>
           }
+        ]
+      }
+    ]
+  },
+  {
+    path: "admin",
+    element: <AdminIndex></AdminIndex>,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: 'update_info',
+        element: <UpdateInfo/>
+      },
+      {
+        path: '',
+        element: <AdminMenu/>,
+        children:[
+          {
+            path: "",
+            element: <UserManage />
+          },
         ]
       }
     ]

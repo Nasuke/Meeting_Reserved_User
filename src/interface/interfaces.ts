@@ -77,7 +77,7 @@ axiosInstance.interceptors.response.use(
 )
 
 async function refreshToken() {
-    const res = await axiosInstance.get('/user/refresh', {
+    const res = await axiosInstance.get('/user/admin-refresh', {
         params: {
           refresh_token: localStorage.getItem('refresh_token')
         }
@@ -87,8 +87,9 @@ async function refreshToken() {
     return res;
 }
 
-export async function login(username: string, password: string) {
-    return await axiosInstance.post('/user/login', {
+export async function login(username: string, password: string, admin:boolean) {
+    const path = admin ? 'admin-login' : 'login'
+    return await axiosInstance.post(`/user/${path}`, {
         username, password
     });
 }
@@ -194,4 +195,26 @@ export async function bookingAdd(booking: CreateBooking) {
 
 export async function presignedUrl(fileName: string) {
     return axiosInstance.get(`/minio/presignedUrl?name=${fileName}`);
+}
+
+
+export async function userSearch(username: string, nickName: string, email: string, pageNo: number, pageSize: number) {
+    return await axiosInstance.get('/user/list', {
+        params: {
+            username,
+            nickName,
+            email,
+            pageNo,
+            pageSize
+        }
+    });
+}
+    
+
+export async function freeze(id: number) {
+    return await axiosInstance.get('/user/freeze', {
+        params: {
+            id
+        }
+    });
 }

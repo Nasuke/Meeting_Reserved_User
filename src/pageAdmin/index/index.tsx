@@ -4,7 +4,7 @@ import './index.css';
 import { useEffect, useState } from "react";
 import cookies from 'js-cookie';
 
-export function Index() {
+export function AdminIndex() {
 
     const [headPic, setHeadPic] = useState();
 
@@ -34,7 +34,7 @@ export function Index() {
 
     return <div id="index-container">
         <div className="header">
-            <h1>会议室预定系统</h1>
+            <h1>管理后台</h1>
             <Link to={'/update_info'} >
                 {
                     headPic ? <img src={'http://localhost:3005/' + headPic} width={40} height={40} className="icon"/> : <UserOutlined className="icon"/>
