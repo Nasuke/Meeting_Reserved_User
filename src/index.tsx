@@ -14,6 +14,9 @@ import { AdminIndex } from './pageAdmin/index';
 import { AdminMenu } from './pageAdmin/menu/Menu';
 import { ChildProcess } from 'child_process';
 import { UserManage } from './pageAdmin/user_manage/UserManage';
+import { MeetingRoomManage } from './pageAdmin/MeetingRoomManage';
+import { BookingManage } from './pageAdmin/BookingManage';
+import { Statistics } from './pageAdmin/Statistics';
 
 const routes = [
   {
@@ -59,9 +62,25 @@ const routes = [
         element: <AdminMenu/>,
         children:[
           {
-            path: "",
-            element: <UserManage />
+            path: '',
+            element: <MeetingRoomManage/>
           },
+          {
+              path: 'user_manage',
+              element: <UserManage/>
+          },
+          {
+              path: 'meeting_room_manage',
+              element: <MeetingRoomManage/>
+          },
+          {
+              path: 'booking_manage',
+              element: <BookingManage/>
+          },
+          {
+              path: 'statistics',
+              element: <Statistics/>
+          }  
         ]
       }
     ]

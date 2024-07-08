@@ -6,6 +6,8 @@ import { UserInfo } from "../page/update_info/UpdateInfo";
 import { message } from "antd";
 import { SearchBooking } from "../page/booking_history/BookingHistory";
 import { CreateBooking } from '../page/meeting_room_list/CreateBookingModal';
+import { CreateMeetingRoom } from '../pageAdmin/MeetingRoomManage/CreateMeetingRoomModal';
+import { UpdateMeetingRoom } from '../pageAdmin/MeetingRoomManage/UpdateMeetingRoom';
 
 const axiosInstance = axios.create({
     baseURL: 'http://localhost:3005/',
@@ -217,4 +219,32 @@ export async function freeze(id: number) {
             id
         }
     });
+}
+
+export async function meetingRoomList(name: string, capacity: number, equipment: string, pageNo: number, pageSize: number) {
+    return await axiosInstance.get('/meeting-room/list', {
+        params: {
+            name,
+            capacity,
+            equipment,
+            pageNo,
+            pageSize
+        }
+    });
+}
+
+export async function deleteMeetingRoom(id: number) {
+    return await axiosInstance.delete('/meeting-room/' + id);
+}
+
+export async function createMeetingRoom(meetingRoom: CreateMeetingRoom) {
+    return await axiosInstance.post('/meeting-room/create', meetingRoom);
+}
+
+export async function updateMeetingRoom(meetingRoom: UpdateMeetingRoom) {
+    return await axiosInstance.put('/meeting-room/update', meetingRoom);
+}
+
+export async function findMeetingRoom(id: number) {
+    return await axiosInstance.get('/meeting-room/' + id);
 }

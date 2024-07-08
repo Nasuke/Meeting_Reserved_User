@@ -3,6 +3,7 @@ import { Menu as AntdMenu, MenuProps } from 'antd';
 import './menu.css';
 import { MenuClickEventHandler } from "rc-menu/lib/interface";
 import { router } from "../..";
+import { log } from "console";
 
 const items: MenuProps['items'] = [
     {
@@ -23,32 +24,45 @@ const items: MenuProps['items'] = [
     },
 ];
 
-const handleMenuItemClick: MenuClickEventHandler = (info:any) => {
+const handleMenuItemClick: MenuClickEventHandler = (info) => {
     let path = '';
     switch(info.key) {
-        case '1':
-            path = '/meeting_room_list';
+        case '0':
+            path = '/admin/meeting_room_manage';
             break;
+        case '1':
+            path = '/admin/booking_manage';
+            break;    
         case '2':
-            path = '/booking_history';
-            break;              
+            path = '/admin/user_manage';
+            break;
+        case '3':
+            path = '/admin/statistics';
+            break;                    
     }
     router.navigate(path);
 }
+
+interface PathMap {
+    [key: string]: string[];
+}
+
+const pathMap: PathMap = {
+    '/admin/meeting_room_manage': ['0'],
+    '/admin/booking_manage': ['1'],
+    '/admin/user_manage': ['2'],
+    '/admin/statistics': ['3']
+};
+
+
 
 
 export function AdminMenu() {
 
     const location = useLocation();
 
-    function getSelectedKeys() {
-        if(location.pathname === '/meeting_room_list') {
-            return ['1']
-        } else if(location.pathname === '/booking_history') {
-            return ['2']
-        } else {
-            return ['3']
-        }
+    function getSelectedKeys():string[] {
+      return pathMap[location.pathname] || ["1"] ;
     }
 
     return <div id="menu-container">
